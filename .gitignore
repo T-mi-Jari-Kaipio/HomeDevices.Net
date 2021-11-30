@@ -3,3 +3,7 @@
 ################################################################################
 
 /HomeDevices.Net.Server.Web/bin
+/HomeDevices.Net.Server.Web/obj
+/.vs/HomeDevices.Net.Server/DesignTimeBuild
+/.vs/HomeDevices.Net.Server/v17
+/.vs/HomeDevices.Net.Server
