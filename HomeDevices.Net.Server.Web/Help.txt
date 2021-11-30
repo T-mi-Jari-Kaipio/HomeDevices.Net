@@ -1,0 +1,5 @@
+
+Add-Migration ApplicationDbInitial -Context ApplicationDbContext -OutputDir Data\Migrations\ApplicationDb
+Update-Database -Context ApplicationDbContext
+
+"C3:48:3F:87:A3:DE"

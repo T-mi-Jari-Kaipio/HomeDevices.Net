@@ -1,0 +1,26 @@
+﻿@page "Index"
+@model HomeDevices.Net.Server.Web.Areas.Service.Pages.IndexModel
+
+<div class="jumbotron">
+    <div class="row row-cols-2">
+        <div class="col-md-2"><img height="50" src="~/img/service.svg" /></div>
+        <div class="col"><h5>Background Service</h5></div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h4>Control Background Service</h4>
+    </div>
+    <div class="card-body">
+        <div class="alert alert-primary" role="alert">
+            <b>Service status: </b>@ViewData["Status"]
+        </div>
+    </div>
+    <div class="card-footer align-content-center">
+        <form method="post">
+            <button type="submit" asp-page-handler="Start" class="btn btn-primary">Start</button>
+            <button type="submit" asp-page-handler="Stop" class="btn btn-secondary">Stop</button>
+        </form>
+    </div>
+</div>

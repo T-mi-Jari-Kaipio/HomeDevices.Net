@@ -1,0 +1,237 @@
+﻿@page
+@model HomeDevices.Net.Server.Web.Pages.ChartsModel
+@{
+}
+<div class="jumbotron">
+    <div class="row row-cols-2">
+        <div class="col-md-2"><img height="50" src="~/img/charts.svg" /></div>
+        <div class="col">
+            <h5>Charts</h5>
+            <p>There is <b>@Model.TotalRows</b> rows in database</p>
+            <p>Log data contains data from period @Model.LogStart - @Model.LogEnd</p>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <form method="post">
+            <div class="mb-3">
+                <div class="form-group">
+                    <label for="id" class="control-label">Select device</label>
+                    <select id="id" name="id" asp-items="Model.Devices" class="form-control"></select>
+                </div>
+            </div>
+            <div class="mb-3">
+                <div class="form-group">
+                    <input type="submit" value="Get Data" class="btn btn-primary" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<hr />
+@if (Model.SelectedDevice == null)
+{
+    <div class="row">
+        <div class="col">
+            <div class="alert alert-danger" role="alert">
+                <h4>No device found</h4>
+                <p>
+                    <strong>Please, select device from above list.</strong>
+                </p>
+            </div>
+        </div>
+    </div>
+}
+else if (!Model.InfoFound)
+{
+    <div class="row">
+        <div class="col">
+            <div class="alert alert-warning" role="alert">
+                <h4>No device info found</h4>
+                <p>
+                    <strong>Please, select other device from above list.</strong>
+                </p>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="row">
+        <div class="col">
+            <div class="alert alert-success" role="alert">
+                <h4>Current info from @Model.SelectedDevice.Name</h4>
+                <p>
+                    <ul>
+                        <li>Latest temperature: <b>@Model.LatestTag.Temperature.Value.ToString("0.00")</b></li>
+                        <li>Max temperature: <b>@Model.HighTemp.Value.ToString("0.00")</b></li>
+                        <li>Min temperature: <b>@Model.LowTemp.Value.ToString("0.00")</b></li>
+                        <li>Average temperature: <b>@Model.AverageTemp.Value.ToString("0.00")</b></li>
+                    </ul>
+                    <ul>
+                        <li>Latest humidity: <b>@Model.LatestTag.Humidity.Value.ToString("0.00")</b></li>
+                        <li>Max humidity: <b>@Model.HighHumidy.Value.ToString("0.00")</b></li>
+                        <li>Min humidity: <b>@Model.LowHumidy.Value.ToString("0.00")</b></li>
+                        <li>Average humidity: <b>@Model.AverageHumidy.Value.ToString("0.00")</b></li>
+                    </ul>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div>
+                    <canvas id="tempInfoChart"></canvas>
+                </div>
+            </div>
+            <div class="col">
+                <div>
+                    <canvas id="humInfoChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <!-- Area Chart -->
+        <div class="col">
+                <div>
+                    <canvas id="tempChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div>
+                    <canvas id="humidyChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+<!-- Page level plugins -->
+<script src="~/lib/chart.js/Chart.min.js"></script>
+<script>
+    var chartdataTemp = @Html.Raw(Json.Serialize(Model.Temperatures));
+    var dataTemp = [];
+    var templabels = [];
+    $.each(chartdataTemp, function (index, value) {
+       templabels.push(value.label);
+        dataTemp.push(value.data);
+    });
+
+    var chartdataHumidy = @Html.Raw(Json.Serialize(Model.Humidies));
+    var dataHum = [];
+    var humlabels = [];
+    $.each(chartdataHumidy, function (index, value) {
+        humlabels.push(value.label);
+        dataHum.push(value.data);
+    });
+    //console.debug(labels);
+    //console.debug(data);
+
+    var ctx = document.getElementById('tempChart').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: templabels,
+            datasets:
+            [
+                    {
+                        label: 'Temperature',
+                        backgroundColor: 'rgb(37, 150, 190)',
+                        borderColor: 'rgb(37, 150, 190)',
+                        data: dataTemp,
+                    }
+            ]
+        },
+        options: {
+          responsive: true,
+        }
+    });
+
+    var ctxHum = document.getElementById('humidyChart').getContext('2d');
+    var chartHum = new Chart(ctxHum, {
+        type: 'line',
+        data: {
+            labels: humlabels,
+            datasets:
+            [
+                    {
+                        label: 'Humidity',
+                        backgroundColor: 'rgb(253, 0, 7, 1)',
+                        borderColor: 'rgb(253, 0, 7, 1)',
+                        data: dataHum,
+                    }
+            ]
+        },
+        options: {
+         responsive: true,
+        }
+    });
+
+    var dataTempInfo = @Html.Raw(Json.Serialize(Model.TempInfo));
+    var dataTempInfos = [];
+    var templabelsInfos = [];
+    $.each(dataTempInfo, function (index, value) {
+        templabelsInfos.push(value.label);
+        dataTempInfos.push(value.data);
+    });
+    var ctxTempInfo = document.getElementById('tempInfoChart').getContext('2d');
+    var chartTempInfo = new Chart(ctxTempInfo, {
+        type: 'bar',
+        data: {
+            labels: templabelsInfos,
+            datasets:
+            [
+                    {
+                        label: 'Temperatures',
+                        backgroundColor: 'rgb(37, 150, 190)',
+                        borderColor: 'rgb(37, 150, 190)',
+                        data: dataTempInfos
+                    }
+            ]
+        },
+        options: {
+         responsive: true,
+        }
+    });
+
+    var dataHumInfo = @Html.Raw(Json.Serialize(Model.HumInfo));
+    var dataHumInfos = [];
+    var humlabelsInfos = [];
+    $.each(dataHumInfo, function (index, value) {
+        humlabelsInfos.push(value.label);
+        dataHumInfos.push(value.data);
+    });
+    var ctxHumInfo = document.getElementById('humInfoChart').getContext('2d');
+    var chartHumInfo = new Chart(ctxHumInfo, {
+        type: 'bar',
+        data: {
+            labels: humlabelsInfos,
+            datasets:
+            [
+                    {
+                        label: 'Humidity',
+                        backgroundColor: 'rgb(253, 0, 7, 1)',
+                        borderColor: 'rgb(253, 0, 7, 1)',
+                        data: dataHumInfos
+                    }
+            ]
+        },
+        options: {
+         responsive: true,
+        }
+    });
+</script>
+    }

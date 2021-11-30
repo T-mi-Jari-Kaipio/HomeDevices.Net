@@ -1,0 +1,27 @@
+﻿@page
+@model HomeDevices.Net.Server.Web.Pages.SettingsModel
+@{
+}
+
+<div class="jumbotron">
+    <div class="row row-cols-2">
+        <div class="col-md-2"><img height="50" src="~/img/settings.svg" /></div>
+        <div class="col"><h5>Settings</h5></div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <div class="alert alert-success" role="alert">
+            <h4>Current settings in appsettings.json</h4>
+            <p>
+                <ul>
+                    <li>AdapterName: <strong>@Model.AdapterName</strong></li>
+                    <li>PollingInterval: <strong>@Model.PollingInterval</strong></li>
+                    <li>ScanDurationSeconds: <strong>@Model.ScanDurationSeconds</strong></li>
+                    <li>Subdirectory: <strong>@Model.Subdirectory</strong></li>
+                </ul>
+            </p>
+        </div>
+    </div>
+</div>

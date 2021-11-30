@@ -1,0 +1,102 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+@if (ViewData["Error"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        <b>Bluetooth status: </b>@ViewData["Error"].ToString()
+    </div>
+}
+
+<!-- Main Content -->
+<div id="content">
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+            <a asp-page="./Charts" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                <i class="fas fa-download fa-sm text-white-50"></i> Generate Reports
+            </a>
+        </div>
+
+        <!-- Content Row -->
+        <div class="row">
+
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    <p>Log info in database</p>
+                                    <p>@ViewData["LogCount"] rows</p>
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <a asp-page="/Index" asp-area="Data"><i class="fas fa-database fa-2x text-gray-300"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                    <p>Devices in database</p>
+                                    <p>@ViewData["DeviceCount"] rows</p>
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <a asp-page="/Index" asp-area="Devices"><i class="fas fa-weight fa-2x text-gray-300"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-warning shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                    <p>Locations in database</p>
+                                    <p>@ViewData["LocationCount"] rows</p>
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <a asp-page="/Index" asp-area="Locations"><i class="fas fa-house-user fa-2x text-gray-300"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Row -->
+
+        <div class="row">
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</div>
+<!-- End of Main Content -->
+<!-- Page level plugins -->
+@section Scripts {
+<!-- Page level plugins -->
+
+<script>
+        
+</script>
+}
