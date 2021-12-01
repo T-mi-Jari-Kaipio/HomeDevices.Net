@@ -52,6 +52,8 @@ namespace HomeDevices.Net.Server.Web.Services
 
         public async Task DoWork(CancellationToken stoppingToken)
         {
+            IBleReader reader;
+
             while (!stoppingToken.IsCancellationRequested)
             {
                 executionCount++;
@@ -67,7 +69,7 @@ namespace HomeDevices.Net.Server.Web.Services
                         foreach (var item in devices)
                         {
                             _logger.LogInformation(executionCount, "Getting data from {Name} RuuviTag", item.Name);
-                            IBleReader reader = new BleReader(new DotNetBlueZService());
+                            reader = new BleReader(new DotNetBlueZService());
 
                             await reader.ScanAsync(_adapterName, _scanDurationSeconds);
                             string ruuviMacAddress = item.MacAddress.Replace("-", ":");
@@ -88,6 +90,8 @@ namespace HomeDevices.Net.Server.Web.Services
                     {
                         _logger.LogError("No devices in databse!");
                     }
+
+                    reader = null;
                 }
                 catch (Tmds.DBus.DBusException ex)
                 {
