@@ -114,7 +114,9 @@ For building the code you need .NET SDK 6.0 or Visual Studio 2021.
 
 4. Copy publish folder to your server, in the folder that is configured to run your ASP.NET server
 
-5. Open the website and register as new user
+5. Create MySQL database and run [sql script](../sql/server_db.sql) to create tables.
+
+6. Open the website and register as new user
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
